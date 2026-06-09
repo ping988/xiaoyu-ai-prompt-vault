@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>小鱼钓猫猫AI提示词宝典</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header class="hero">
+        <div class="hero-copy">
+          <div class="system-line">
+            <span>AIXLAB / CORE</span>
+            <span>v4.2.2-ULTRA</span>
+          </div>
+          <div class="brand-row">
+            <span class="brand-mark" aria-hidden="true">▦</span>
+            <div>
+              <h1>AI提示词收录</h1>
+              <p class="spirit">SPIRIT PROMPT ENGINE</p>
+            </div>
+          </div>
+        </div>
+        <div class="hero-side" aria-label="快捷操作">
+          <p class="brand-stamp">小鱼钓猫猫 ⊕<br />PROMPT .CN</p>
+          <button id="openImportExportButton" class="float-button" type="button" title="导入导出" aria-label="导入导出">⚙</button>
+          <button id="newPromptButton" class="float-button large" type="button" title="新增模板" aria-label="新增模板">＋</button>
+          <span class="pager-dots" aria-hidden="true"><b></b><i></i><i></i><i></i><i></i></span>
+        </div>
+      </header>
+
+      <section class="search-panel" aria-label="搜索提示词">
+        <div class="search-box">
+          <button id="searchButton" class="search-button" type="button" aria-label="搜索提示词"></button>
+          <input id="searchInput" type="search" placeholder="搜索高阶秘法内容..." autocomplete="off" />
+        </div>
+      </section>
+
+      <section class="filter-dock" aria-label="词库筛选">
+        <button id="allFilterButton" class="tool-pill active" type="button">
+          <span aria-hidden="true">▦</span>
+          <strong>全部</strong>
+          <small id="totalCount">0</small>
+        </button>
+        <button id="favoriteFilterButton" class="tool-pill" type="button">
+          <span aria-hidden="true">☆</span>
+          <strong>收藏</strong>
+          <small id="favoriteCount">0</small>
+        </button>
+        <div class="quick-filters" id="quickFilters" aria-label="快速分类筛选"></div>
+        <label class="tool-pill sort-pill">
+          <span aria-hidden="true">⌄</span>
+          <select id="sortSelect" aria-label="排序方式">
+            <option value="updatedAt">最近编辑</option>
+            <option value="createdAt">最近创建</option>
+            <option value="title">标题排序</option>
+          </select>
+        </label>
+      </section>
+
+      <section class="list-head" aria-live="polite">
+        <h2 id="resultTitle">全部提示词</h2>
+        <p id="resultHint">通过关键词快速定位可复用模板。</p>
+      </section>
+
+      <section id="promptList" class="prompt-list" aria-live="polite"></section>
+    </main>
+
+    <dialog id="editorDialog" class="dialog">
+      <form id="promptForm" class="editor-form" method="dialog">
+        <header class="dialog-head">
+          <div>
+            <p class="eyebrow">CUSTOMIZE</p>
+            <h2 id="editorTitle">新增提示词模板</h2>
+          </div>
+          <button class="icon-button" value="cancel" type="button" data-close-dialog aria-label="关闭">×</button>
+        </header>
+
+        <label for="titleInput">模板标题</label>
+        <input id="titleInput" type="text" placeholder="例如：逆向提示词专家" required />
+
+        <div class="form-grid">
+          <div>
+            <label for="categoryInput">分类</label>
+            <input id="categoryInput" type="text" list="categoryList" placeholder="选择或输入分类" required />
+            <datalist id="categoryList"></datalist>
+          </div>
+          <div>
+            <label for="tagsInput">标签</label>
+            <input id="tagsInput" type="text" placeholder="逗号分隔，如：角色, 电影" />
+          </div>
+        </div>
+
+        <label for="promptInput">提示词正文</label>
+        <textarea id="promptInput" rows="8" placeholder="写入完整可复制的提示词正文" required></textarea>
+
+        <label for="negativeInput">负面提示词</label>
+        <textarea id="negativeInput" rows="3" placeholder="可选，如：低清晰度、畸变、多余手指"></textarea>
+
+        <label for="notesInput">使用备注</label>
+        <textarea id="notesInput" rows="3" placeholder="可选，记录适用模型、参数或替换变量"></textarea>
+
+        <label class="checkbox-row">
+          <input id="favoriteInput" type="checkbox" />
+          <span>加入收藏</span>
+        </label>
+
+        <footer class="dialog-actions">
+          <button id="deletePromptButton" class="ghost danger hidden" type="button">删除</button>
+          <button class="ghost" type="button" data-close-dialog>取消</button>
+          <button class="primary" type="submit">完成保存</button>
+        </footer>
+      </form>
+    </dialog>
+
+    <dialog id="importExportDialog" class="dialog">
+      <form class="editor-form" method="dialog">
+        <header class="dialog-head">
+          <div>
+            <p class="eyebrow">BACKUP</p>
+            <h2>导入 / 导出词库</h2>
+          </div>
+          <button class="icon-button" value="cancel" type="button" data-close-dialog aria-label="关闭">×</button>
+        </header>
+        <p class="hint">导出的 JSON 可用于备份或迁移。导入会合并同 ID 的模板，并保留本地未冲突内容。</p>
+        <textarea id="jsonBox" rows="10" spellcheck="false" placeholder="这里显示导出的 JSON，也可以粘贴要导入的数据"></textarea>
+        <footer class="dialog-actions">
+          <button id="exportButton" class="ghost" type="button">生成导出</button>
+          <button id="importButton" class="primary" type="button">导入合并</button>
+        </footer>
+      </form>
+    </dialog>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <script src="popup.js"></script>
+  </body>
+</html>

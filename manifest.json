@@ -1,0 +1,24 @@
+{
+  "manifest_version": 3,
+  "name": "小鱼钓猫猫AI提示词宝典",
+  "version": "1.0.0",
+  "description": "小鱼钓猫猫的本地提示词词库插件，支持搜索、分类、收藏、编辑、复制和 JSON 导入导出。",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "action": {
+    "default_title": "小鱼钓猫猫AI提示词宝典",
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "permissions": [
+    "clipboardWrite",
+    "storage"
+  ]
+}
